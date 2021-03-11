@@ -1,41 +1,49 @@
-import { Stage, Graphics, Container } from "@inlet/react-pixi";
-import { useState, useCallback } from "react";
+import { Graphics } from "@inlet/react-pixi";
+import { useState } from "react";
 import { useSpring, animated } from "react-spring";
 import * as PIXI from "pixi.js";
 
 const Rectangle = ({ x, y, width, height, onClick }) => {
-  const draw = useCallback((graphic) => {
+  let radius = height / 2;
+
+  const draw = (graphic) => {
     graphic.clear();
 
     graphic.beginFill(0xffce07);
-    graphic.arc(50, 50, 50, Math.PI / 2, (3 * Math.PI) / 2);
+    graphic.arc(x, y, radius, Math.PI / 2, (3 * Math.PI) / 2);
     graphic.endFill();
 
     graphic.beginFill(0xffce07);
-    graphic.drawRect(50, 0, width, 100);
+    graphic.drawRect(x, y - radius, width, height);
     graphic.endFill();
     graphic.interactive = true;
-    graphic.hitArea = new PIXI.Rectangle(0, 0, width + 100, 100);
+    graphic.hitArea = new PIXI.Rectangle(
+      x - radius,
+      y - radius,
+      width + height,
+      height
+    );
     graphic.click = onClick;
 
     graphic.beginFill(0xffce07);
-    graphic.arc(width + 50, 50, 50, -Math.PI / 2, (1 * Math.PI) / 2);
+    graphic.arc(x + width, y, radius, -Math.PI / 2, (1 * Math.PI) / 2);
     graphic.endFill();
-  });
+  };
 
   return <Graphics draw={draw} />;
 };
 
-export const AnimatedRectangle = () => {
+export const AnimatedRectangle = ({ x, y, closeWidth, openWidth, height }) => {
   const [open, setOpen] = useState(false);
   const click = () => setOpen(!open);
   const AnimatedRectangle = animated(Rectangle);
-  const props = useSpring({ width: open ? 100 : 200 });
+  const props = useSpring({ width: open ? closeWidth : openWidth });
   return (
     <AnimatedRectangle
-      x={100}
-      y={100}
+      x={x}
+      y={y}
       width={props.width}
+      height={height}
       onClick={click}
     ></AnimatedRectangle>
   );

@@ -1,21 +1,45 @@
-import { Stage, Graphics, Container } from "@inlet/react-pixi";
-import { useState, useCallback } from "react";
+import { Graphics } from "@inlet/react-pixi";
+import { useState } from "react";
 import { useSpring, animated } from "react-spring";
 import * as PIXI from "pixi.js";
+import { Point } from "pixi.js";
 
-export const Donut = ({ degree }) => {
-  const draw = useCallback((graphic) => {
-    graphic.clear();
-    graphic.beginFill(0xffce07);
-    graphic.arc(50, 50, 50, 0, degree * (Math.PI / 180));
-    graphic.endFill();
+const Donut = ({ x, y, radius, degree, onClick }) => {
+  let startPoint = new Point({
+    x: Math.cos(degree) * radius,
+    y: Math.sin(degree) * radius
   });
+
+  const draw = (graphic) => {
+    graphic.clear();
+    graphic.moveTo(x + startPoint.x, y + startPoint.y);
+    graphic.lineStyle(3, 0xffce07, 1);
+    graphic.arc(x, y, radius, 0, degree * (Math.PI / 180));
+    graphic.interactive = true;
+    graphic.hitArea = new PIXI.Circle(x, y, radius);
+    graphic.click = onClick;
+  };
 
   return <Graphics draw={draw} />;
 };
 
-export const AnimatedDonut = () => {
+export const AnimatedDonut = ({ x, y, radius }) => {
+  const random = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+  let rand = random(0, 360);
+  const [status, setStatus] = useState(false);
+  const click = () => setStatus(!status);
   const AnimatedDonut = animated(Donut);
-  const props = useSpring({ degree: 360, from: { degree: 0 } });
-  return <AnimatedDonut degree={props.degree}></AnimatedDonut>;
+  const props = useSpring({
+    degree: status ? rand : rand,
+    from: { degree: 0 }
+  });
+  return (
+    <AnimatedDonut
+      x={x}
+      y={y}
+      radius={radius}
+      degree={props.degree}
+      onClick={click}
+    ></AnimatedDonut>
+  );
 };
