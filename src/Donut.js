@@ -29,7 +29,7 @@ export const AnimatedDonut = ({ x, y, radius }) => {
   let rand = random(0, 360);
   const [status, setStatus] = useState(false);
 
-  let timeout = random(3000, 6000);
+  let timeout = random(9000, 11000);
   setTimeout(function () {
     setStatus(!status);
   }, timeout);
