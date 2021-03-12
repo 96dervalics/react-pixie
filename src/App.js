@@ -17,8 +17,8 @@ export function App() {
   // });
 
   let circles = [];
-  for (let i = 0; i <= 12; i++) {
-    for (let j = 0; j <= 9; j++) {
+  for (let i = 0; i <= 10; i++) {
+    for (let j = 0; j <= 8; j++) {
       circles.push(
         <AnimatedDonut
           x={i * 100 + 50}
