@@ -1,6 +1,6 @@
 import { Stage } from "@inlet/react-pixi";
 import * as PIXI from "pixi.js";
-import { AnimatedRectangle } from "./AnimatedRectangle";
+import { AnimatedRectangle } from "./Rectangle";
 import { AnimatedDonut } from "./Donut";
 import Viewport from "./Viewport";
 
