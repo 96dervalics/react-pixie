@@ -1,6 +1,4 @@
-import { Stage, Graphics, Container } from "@inlet/react-pixi";
-import { useState, useCallback } from "react";
-import { useSpring, animated } from "react-spring";
+import { Stage } from "@inlet/react-pixi";
 import * as PIXI from "pixi.js";
 import { AnimatedRectangle } from "./AnimatedRectangle";
 import { AnimatedDonut } from "./Donut";
@@ -9,11 +7,6 @@ import Viewport from "./Viewport";
 const width = 1000;
 const height = 600;
 export function App() {
-  // const [degree, setDegree] = useState(0);
-  // setTimeout(() => {
-  //   setDegree(random(0, 360));
-  // });
-
   let circles = [];
   for (let i = 0; i <= 3; i++) {
     for (let j = 0; j <= 3; j++) {
