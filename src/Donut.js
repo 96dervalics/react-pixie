@@ -21,6 +21,7 @@ const Donut = ({ x, y, radius, degree, onClick }) => {
     graphic.click = onClick;
   };
 
+  // return Math.random() < 0.5 ? null : <Graphics draw={draw} />;
   return <Graphics draw={draw} />;
 };
 
