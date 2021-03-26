@@ -4,6 +4,7 @@ import * as PIXI from "pixi.js";
 import { AnimatedRectangle } from "./Rectangle";
 import { AnimatedDonut } from "./Donut";
 import MyViewport from "./MyViewport";
+import { ViewportProvider } from "./ViewportContext";
 
 const width = 1000;
 const height = 600;
@@ -28,23 +29,30 @@ export function App() {
       height={height}
       options={{ antialias: true, backgroundColor: 0xeef1f5 }}
     >
-      <MyViewport>
-        <AnimatedRectangle
-          x={500}
-          y={100}
-          closeWidth={100}
-          openWidth={200}
-          height={100}
-        ></AnimatedRectangle>
-        <AnimatedRectangle
-          x={500}
-          y={400}
-          closeWidth={100}
-          openWidth={200}
-          height={100}
-        ></AnimatedRectangle>
-        {circles}
-      </MyViewport>
+      <ViewportProvider>
+        <MyViewport>
+          {(viewport) => (
+            <>
+              <AnimatedRectangle
+                x={500}
+                y={100}
+                closeWidth={100}
+                openWidth={200}
+                height={100}
+                viewport={viewport}
+              ></AnimatedRectangle>
+              <AnimatedRectangle
+                x={500}
+                y={400}
+                closeWidth={100}
+                openWidth={200}
+                height={100}
+              ></AnimatedRectangle>
+              {circles}
+            </>
+          )}
+        </MyViewport>
+      </ViewportProvider>
     </Stage>
   );
 }

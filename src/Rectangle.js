@@ -1,9 +1,13 @@
 import { Graphics } from "@inlet/react-pixi";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import * as PIXI from "pixi.js";
+import { ViewportContext } from "./ViewportContext";
 
 const Rectangle = ({ x, y, width, height, onClick }) => {
+  const { viewport } = useContext(ViewportContext);
+  console.log(viewport.corner);
+
   let radius = height / 2;
 
   const draw = (graphic) => {

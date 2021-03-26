@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Viewport from "./Viewport";
 import { useApp } from "@inlet/react-pixi";
-
-// export const active_screen = {
-//   corner: Math.Point(0, 0),
-//   width: 1000,
-//   height: 600
-// };
-// const ViewportContext = React.createContext(active_screen);
+import { ViewportContext } from "./ViewportContext";
 
 const MyViewport = ({ children }) => {
   const app = useApp();
+  const { viewport, setViewport } = useContext(ViewportContext);
+  const viewportRef = useRef();
+
+  useEffect(() => {
+    if (viewportRef.current) {
+      setViewport(viewportRef.current);
+    }
+  });
+
   return app ? (
-    // <ViewportContext.Provider value={active_screen}>
-    <Viewport app={app}>{children}</Viewport>
-  ) : // </ViewportContext.Provider>
-  null;
+    <Viewport app={app} ref={viewportRef}>
+      {children(viewportRef.current)}
+    </Viewport>
+  ) : null;
 };
 
 export default MyViewport;
