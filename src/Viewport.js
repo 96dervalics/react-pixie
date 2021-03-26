@@ -1,5 +1,6 @@
 import { Viewport } from "pixi-viewport";
 import { PixiComponent } from "@inlet/react-pixi";
+import { Point } from "pixi.js";
 
 export default PixiComponent("Viewport", {
   create: (props) => {

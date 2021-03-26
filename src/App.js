@@ -14,8 +14,8 @@ export function App() {
     for (let j = 0; j <= 10; j++) {
       circles.push(
         <AnimatedDonut
-          x={i * 100 + 50}
-          y={j * 100 + 50}
+          x={i * 300 + 50}
+          y={j * 300 + 50}
           radius={40}
         ></AnimatedDonut>
       );
