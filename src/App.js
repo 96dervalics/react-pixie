@@ -1,8 +1,9 @@
 import { Stage } from "@inlet/react-pixi";
+import React from "react";
 import * as PIXI from "pixi.js";
 import { AnimatedRectangle } from "./Rectangle";
 import { AnimatedDonut } from "./Donut";
-import Viewport from "./Viewport";
+import MyViewport from "./MyViewport";
 
 const width = 1000;
 const height = 600;
@@ -26,7 +27,7 @@ export function App() {
       height={height}
       options={{ antialias: true, backgroundColor: 0xeef1f5 }}
     >
-      <Viewport>
+      <MyViewport>
         <AnimatedRectangle
           x={500}
           y={100}
@@ -42,7 +43,7 @@ export function App() {
           height={100}
         ></AnimatedRectangle>
         {circles}
-      </Viewport>
+      </MyViewport>
     </Stage>
   );
 }
