@@ -7,10 +7,11 @@ import MyViewport from "./MyViewport";
 
 const width = 1000;
 const height = 600;
+
 export function App() {
   let circles = [];
-  for (let i = 0; i <= 3; i++) {
-    for (let j = 0; j <= 3; j++) {
+  for (let i = 0; i <= 10; i++) {
+    for (let j = 0; j <= 10; j++) {
       circles.push(
         <AnimatedDonut
           x={i * 100 + 50}
