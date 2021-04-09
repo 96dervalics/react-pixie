@@ -6,7 +6,7 @@ import { ViewportContext } from "./ViewportContext";
 
 const Rectangle = ({ x, y, width, height, onClick }) => {
   const { viewport } = useContext(ViewportContext);
-  console.log(viewport.corner);
+  console.log(viewport.worldScreenWidth);
 
   let radius = height / 2;
 
