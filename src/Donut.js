@@ -22,7 +22,6 @@ const Donut = ({ x, y, radius, degree, onClick }) => {
     graphic.click = onClick;
   };
 
-  // return Math.random() < 0.5 ? null : <Graphics draw={draw} />;
   return <Graphics draw={draw} />;
 };
 
@@ -62,17 +61,17 @@ const IsInViewport = (x, y, radius) => {
     viewport.top < y + radius + 15 &&
     viewport.top + viewport.worldScreenHeight > y - radius - 15
   ) {
-    console.log(
-      viewport.left +
-        " " +
-        viewport.worldScreenWidth +
-        " " +
-        viewport.worldWidth +
-        " " +
-        x +
-        " " +
-        radius
-    );
+    // console.log(
+    //   viewport.left +
+    //     " " +
+    //     viewport.worldScreenWidth +
+    //     " " +
+    //     viewport.worldWidth +
+    //     " " +
+    //     x +
+    //     " " +
+    //     radius
+    // );
     return true;
   } else {
     return false;

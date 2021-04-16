@@ -10,6 +10,7 @@
   "dependencies": {
     "@babel/runtime": "7.13.8",
     "@inlet/react-pixi": "6.2.0",
+    "d3-flextree": "2.1.1",
     "pixi-viewport": "4.21.1",
     "pixi.js": "6.0.0",
     "react": "17.0.1",

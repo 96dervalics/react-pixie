@@ -37,11 +37,21 @@ const Rectangle = ({ x, y, width, height, onClick }) => {
   return <Graphics draw={draw} />;
 };
 
-export const AnimatedRectangle = ({ x, y, closeWidth, openWidth, height }) => {
+export const AnimatedRectangle = ({
+  x,
+  y,
+  closeWidth,
+  openWidth,
+  height,
+  viewport
+}) => {
   const [open, setOpen] = useState(false);
   const click = () => setOpen(!open);
   const AnimatedRectangle = animated(Rectangle);
   const props = useSpring({ width: open ? closeWidth : openWidth });
+
+  console.log({ viewport });
+
   return (
     <AnimatedRectangle
       x={x}
