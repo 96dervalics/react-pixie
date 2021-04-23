@@ -50,7 +50,7 @@ export const AnimatedRectangle = ({
   const AnimatedRectangle = animated(Rectangle);
   const props = useSpring({ width: open ? closeWidth : openWidth });
 
-  console.log({ viewport });
+  //console.log({ viewport });
 
   return (
     <AnimatedRectangle
