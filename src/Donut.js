@@ -29,10 +29,13 @@ export const AnimatedDonut = ({ x, y, radius }) => {
   const random = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
   let rand = random(0, 360);
   const [status, setStatus] = useState(false);
+  const { viewportBox } = useContext(ViewportContext);
 
-  let timeout = 1000; /*random(5000, 10000)*/
+  let timeout = random(5000, 10000);
   setTimeout(function () {
-    setStatus(!status);
+    if (IsInViewport(viewportBox, x, y, radius)) {
+      setStatus(!status);
+    }
   }, timeout);
 
   const click = () => setStatus(!status);
@@ -41,7 +44,7 @@ export const AnimatedDonut = ({ x, y, radius }) => {
     degree: status ? rand : rand,
     from: { degree: 0 }
   });
-  return IsInViewport(x, y, radius) ? (
+  return IsInViewport(viewportBox, x, y, radius) ? (
     <AnimatedDonut
       x={x}
       y={y}
@@ -52,26 +55,16 @@ export const AnimatedDonut = ({ x, y, radius }) => {
   ) : null;
 };
 
-const IsInViewport = (x, y, radius) => {
-  const { viewport } = useContext(ViewportContext);
-
+const IsInViewport = (viewportBox, x, y, radius) => {
+  const border_margin = 15;
   if (
-    viewport.left < x + radius + 15 &&
-    viewport.left + viewport.worldScreenWidth > x - radius - 15 &&
-    viewport.top < y + radius + 15 &&
-    viewport.top + viewport.worldScreenHeight > y - radius - 15
+    viewportBox.corner.x < x + radius + border_margin &&
+    viewportBox.corner.x + viewportBox.worldScreenWidth >
+      x - radius - border_margin &&
+    viewportBox.corner.y < y + radius + border_margin &&
+    viewportBox.corner.y + viewportBox.worldScreenHeight >
+      y - radius - border_margin
   ) {
-    // console.log(
-    //   viewport.left +
-    //     " " +
-    //     viewport.worldScreenWidth +
-    //     " " +
-    //     viewport.worldWidth +
-    //     " " +
-    //     x +
-    //     " " +
-    //     radius
-    // );
     return true;
   } else {
     return false;

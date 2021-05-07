@@ -11,24 +11,51 @@ const width = 1000;
 const height = 600;
 
 export function App() {
-  // flextree testing
+  const horisontalSpacing = 100 + 100;
+  const verticalSpacing = 100 + 50;
+
   const layout = flextree();
-  layout.spacing(400);
+  layout.spacing(horisontalSpacing);
   const tree = layout.hierarchy({
     size: [55, 110],
     type: "circle",
     children: [
       {
-        size: [200, 155],
+        size: [200, 100],
         type: "rectangle",
-        children: [{ size: [55, 110], type: "circle" }]
+        children: [{ size: [55, 55], type: "circle" }]
       },
       {
-        size: [55, 110],
+        size: [55, 55],
         type: "circle",
         children: [
-          { size: [200, 155], type: "rectangle" },
-          { size: [200, 155], type: "rectangle" }
+          {
+            size: [200, 100],
+            type: "rectangle",
+            children: [
+              { size: [55, 55], type: "circle" },
+              { size: [55, 55], type: "circle" },
+              { size: [200, 100], type: "rectangle" }
+            ]
+          },
+          {
+            size: [200, 100],
+            type: "rectangle",
+            children: [
+              { size: [200, 100], type: "rectangle" },
+              { size: [55, 55], type: "circle" },
+              { size: [200, 100], type: "rectangle" }
+            ]
+          },
+          {
+            size: [200, 100],
+            type: "rectangle",
+            children: [
+              { size: [200, 100], type: "rectangle" },
+              { size: [200, 100], type: "rectangle" },
+              { size: [55, 55], type: "circle" }
+            ]
+          }
         ]
       }
     ]
@@ -36,17 +63,23 @@ export function App() {
   layout(tree);
 
   let elements = [];
+  let key = 0;
   tree.each((node) => {
-    //console.log(`(${node.x}, ${node.y})`);
-    console.log(node);
+    node.y += node.depth * verticalSpacing;
 
     if (node.data.type === "circle") {
       elements.push(
-        <AnimatedDonut x={node.x} y={node.y} radius={40}></AnimatedDonut>
+        <AnimatedDonut
+          key={key}
+          x={node.x}
+          y={node.y}
+          radius={40}
+        ></AnimatedDonut>
       );
     } else if (node.data.type === "rectangle") {
       elements.push(
         <AnimatedRectangle
+          key={key}
           x={node.x}
           y={node.y}
           closeWidth={100}
@@ -55,22 +88,8 @@ export function App() {
         ></AnimatedRectangle>
       );
     }
+    key++;
   });
-
-  console.log(elements);
-
-  // let circles = [];
-  // for (let i = 0; i <= 10; i++) {
-  //   for (let j = 0; j <= 10; j++) {
-  //     circles.push(
-  //       <AnimatedDonut
-  //         x={i * 400 + 50}
-  //         y={j * 400 + 50}
-  //         radius={40}
-  //       ></AnimatedDonut>
-  //     );
-  //   }
-  // }
 
   return (
     <Stage
@@ -79,40 +98,7 @@ export function App() {
       options={{ antialias: true, backgroundColor: 0xeef1f5 }}
     >
       <ViewportProvider>
-        <MyViewport>
-          {(viewport) => (
-            <>
-              {elements}
-              {/* <AnimatedDonut x={0} y={0} radius={40} />
-              <AnimatedRectangle
-                x={-228}
-                y={100}
-                closeWidth={100}
-                openWidth={200}
-                height={100}
-                viewport={viewport}
-              />
-              <AnimatedDonut x={373} y={100} radius={40} />
-              <AnimatedDonut x={-228} y={300} radius={40} />
-              <AnimatedRectangle
-                x={173}
-                y={210}
-                closeWidth={100}
-                openWidth={200}
-                height={100}
-                viewport={viewport}
-              />
-              <AnimatedRectangle
-                x={573}
-                y={210}
-                closeWidth={100}
-                openWidth={200}
-                height={100}
-                viewport={viewport}
-              /> */}
-            </>
-          )}
-        </MyViewport>
+        <MyViewport>{(viewport) => <>{elements}</>}</MyViewport>
       </ViewportProvider>
     </Stage>
   );

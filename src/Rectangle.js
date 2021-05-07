@@ -46,13 +46,22 @@ export const AnimatedRectangle = ({
   viewport
 }) => {
   const [open, setOpen] = useState(false);
+  const { viewportBox } = useContext(ViewportContext);
   const click = () => setOpen(!open);
   const AnimatedRectangle = animated(Rectangle);
   const props = useSpring({ width: open ? closeWidth : openWidth });
 
-  //console.log({ viewport });
-
-  return (
+  return open ? (
+    IsInViewport(viewportBox, x, y, openWidth, height) ? (
+      <AnimatedRectangle
+        x={x}
+        y={y}
+        width={props.width}
+        height={height}
+        onClick={click}
+      ></AnimatedRectangle>
+    ) : null
+  ) : IsInViewport(viewportBox, x, y, closeWidth, height) ? (
     <AnimatedRectangle
       x={x}
       y={y}
@@ -60,5 +69,21 @@ export const AnimatedRectangle = ({
       height={height}
       onClick={click}
     ></AnimatedRectangle>
-  );
+  ) : null;
+};
+
+const IsInViewport = (viewportBox, x, y, width, height) => {
+  const border_margin = 5;
+  if (
+    viewportBox.corner.x < x + width + height * 2 + border_margin &&
+    viewportBox.corner.x + viewportBox.worldScreenWidth >
+      x - width - border_margin &&
+    viewportBox.corner.y < y + height + border_margin &&
+    viewportBox.corner.y + viewportBox.worldScreenHeight >
+      y - height - border_margin
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
