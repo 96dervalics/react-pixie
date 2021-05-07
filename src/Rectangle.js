@@ -5,9 +5,6 @@ import * as PIXI from "pixi.js";
 import { ViewportContext } from "./ViewportContext";
 
 const Rectangle = ({ x, y, width, height, onClick }) => {
-  const { viewport } = useContext(ViewportContext);
-  console.log(viewport.worldScreenWidth);
-
   let radius = height / 2;
 
   const draw = (graphic) => {

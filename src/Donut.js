@@ -25,7 +25,7 @@ const Donut = ({ x, y, radius, degree, onClick }) => {
   return <Graphics draw={draw} />;
 };
 
-export const AnimatedDonut = ({ x, y, radius }) => {
+export const AnimatedDonut = ({ x, y, radius, degree }) => {
   const random = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
   let rand = random(0, 360);
   const [status, setStatus] = useState(false);

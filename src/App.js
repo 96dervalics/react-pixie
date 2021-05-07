@@ -3,9 +3,11 @@ import React from "react";
 import * as PIXI from "pixi.js";
 import { AnimatedRectangle } from "./Rectangle";
 import { AnimatedDonut } from "./Donut";
+import { Connection } from "./Connection";
 import MyViewport from "./MyViewport";
 import { ViewportProvider } from "./ViewportContext";
 import { flextree } from "d3-flextree";
+import { tree_data } from "./tree_test";
 
 const width = 1000;
 const height = 600;
@@ -16,6 +18,9 @@ export function App() {
 
   const layout = flextree();
   layout.spacing(horisontalSpacing);
+  // const tree = layout.hierarchy(tree_data);
+  // layout(tree);
+
   const tree = layout.hierarchy({
     size: [55, 110],
     type: "circle",
@@ -63,14 +68,15 @@ export function App() {
   layout(tree);
 
   let elements = [];
-  let key = 0;
+  let node_id = 0;
+  let edge_id = 0;
   tree.each((node) => {
     node.y += node.depth * verticalSpacing;
 
     if (node.data.type === "circle") {
       elements.push(
         <AnimatedDonut
-          key={key}
+          key={"node_" + node_id}
           x={node.x}
           y={node.y}
           radius={40}
@@ -79,7 +85,7 @@ export function App() {
     } else if (node.data.type === "rectangle") {
       elements.push(
         <AnimatedRectangle
-          key={key}
+          key={"node_" + node_id}
           x={node.x}
           y={node.y}
           closeWidth={100}
@@ -88,7 +94,20 @@ export function App() {
         ></AnimatedRectangle>
       );
     }
-    key++;
+
+    if (node.parent) {
+      elements.push(
+        <Connection
+          key={"edge" + edge_id}
+          source_x={node.parent.x}
+          source_y={node.parent.y}
+          target_x={node.x}
+          target_y={node.y}
+        ></Connection>
+      );
+    }
+    node_id++;
+    edge_id++;
   });
 
   return (
