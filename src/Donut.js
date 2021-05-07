@@ -1,8 +1,9 @@
 import { Graphics } from "@inlet/react-pixi";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import * as PIXI from "pixi.js";
 import { Point } from "pixi.js";
+import { ViewportContext } from "./ViewportContext";
 
 const Donut = ({ x, y, radius, degree, onClick }) => {
   let startPoint = new Point({
@@ -28,10 +29,13 @@ export const AnimatedDonut = ({ x, y, radius }) => {
   const random = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
   let rand = random(0, 360);
   const [status, setStatus] = useState(false);
+  const { viewportBox } = useContext(ViewportContext);
 
   let timeout = random(5000, 10000);
   setTimeout(function () {
-    setStatus(!status);
+    if (IsInViewport(viewportBox, x, y, radius)) {
+      setStatus(!status);
+    }
   }, timeout);
 
   const click = () => setStatus(!status);
@@ -40,7 +44,7 @@ export const AnimatedDonut = ({ x, y, radius }) => {
     degree: status ? rand : rand,
     from: { degree: 0 }
   });
-  return (
+  return IsInViewport(viewportBox, x, y, radius) ? (
     <AnimatedDonut
       x={x}
       y={y}
@@ -48,5 +52,21 @@ export const AnimatedDonut = ({ x, y, radius }) => {
       degree={props.degree}
       onClick={click}
     ></AnimatedDonut>
-  );
+  ) : null;
+};
+
+const IsInViewport = (viewportBox, x, y, radius) => {
+  const border_margin = 15;
+  if (
+    viewportBox.corner.x < x + radius + border_margin &&
+    viewportBox.corner.x + viewportBox.worldScreenWidth >
+      x - radius - border_margin &&
+    viewportBox.corner.y < y + radius + border_margin &&
+    viewportBox.corner.y + viewportBox.worldScreenHeight >
+      y - radius - border_margin
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };

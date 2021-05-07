@@ -1,33 +1,95 @@
-import { Stage, Graphics, Container } from "@inlet/react-pixi";
-import { useState, useCallback } from "react";
-import { useSpring, animated } from "react-spring";
+import { Stage } from "@inlet/react-pixi";
+import React from "react";
 import * as PIXI from "pixi.js";
-import { AnimatedRectangle } from "./AnimatedRectangle";
+import { AnimatedRectangle } from "./Rectangle";
 import { AnimatedDonut } from "./Donut";
+import MyViewport from "./MyViewport";
+import { ViewportProvider } from "./ViewportContext";
+import { flextree } from "d3-flextree";
 
-const width = 1980;
-const height = 1080;
-
-// const random = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+const width = 1000;
+const height = 600;
 
 export function App() {
-  // const [degree, setDegree] = useState(0);
-  // setTimeout(() => {
-  //   setDegree(random(0, 360));
-  // });
+  const horisontalSpacing = 100 + 100;
+  const verticalSpacing = 100 + 50;
 
-  let circles = [];
-  for (let i = 0; i <= 10; i++) {
-    for (let j = 0; j <= 8; j++) {
-      circles.push(
+  const layout = flextree();
+  layout.spacing(horisontalSpacing);
+  const tree = layout.hierarchy({
+    size: [55, 110],
+    type: "circle",
+    children: [
+      {
+        size: [200, 100],
+        type: "rectangle",
+        children: [{ size: [55, 55], type: "circle" }]
+      },
+      {
+        size: [55, 55],
+        type: "circle",
+        children: [
+          {
+            size: [200, 100],
+            type: "rectangle",
+            children: [
+              { size: [55, 55], type: "circle" },
+              { size: [55, 55], type: "circle" },
+              { size: [200, 100], type: "rectangle" }
+            ]
+          },
+          {
+            size: [200, 100],
+            type: "rectangle",
+            children: [
+              { size: [200, 100], type: "rectangle" },
+              { size: [55, 55], type: "circle" },
+              { size: [200, 100], type: "rectangle" }
+            ]
+          },
+          {
+            size: [200, 100],
+            type: "rectangle",
+            children: [
+              { size: [200, 100], type: "rectangle" },
+              { size: [200, 100], type: "rectangle" },
+              { size: [55, 55], type: "circle" }
+            ]
+          }
+        ]
+      }
+    ]
+  });
+  layout(tree);
+
+  let elements = [];
+  let key = 0;
+  tree.each((node) => {
+    node.y += node.depth * verticalSpacing;
+
+    if (node.data.type === "circle") {
+      elements.push(
         <AnimatedDonut
-          x={i * 100 + 50}
-          y={j * 100 + 50}
+          key={key}
+          x={node.x}
+          y={node.y}
           radius={40}
         ></AnimatedDonut>
       );
+    } else if (node.data.type === "rectangle") {
+      elements.push(
+        <AnimatedRectangle
+          key={key}
+          x={node.x}
+          y={node.y}
+          closeWidth={100}
+          openWidth={200}
+          height={100}
+        ></AnimatedRectangle>
+      );
     }
-  }
+    key++;
+  });
 
   return (
     <Stage
@@ -35,28 +97,9 @@ export function App() {
       height={height}
       options={{ antialias: true, backgroundColor: 0xeef1f5 }}
     >
-      <AnimatedRectangle
-        x={1500}
-        y={100}
-        closeWidth={100}
-        openWidth={200}
-        height={100}
-      ></AnimatedRectangle>
-      <AnimatedRectangle
-        x={1500}
-        y={400}
-        closeWidth={100}
-        openWidth={200}
-        height={100}
-      ></AnimatedRectangle>
-      <AnimatedRectangle
-        x={1500}
-        y={700}
-        closeWidth={100}
-        openWidth={200}
-        height={100}
-      ></AnimatedRectangle>
-      {circles}
+      <ViewportProvider>
+        <MyViewport>{(viewport) => <>{elements}</>}</MyViewport>
+      </ViewportProvider>
     </Stage>
   );
 }
