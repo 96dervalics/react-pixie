@@ -21,44 +21,73 @@ export function App() {
   // const tree = layout.hierarchy(tree_data);
   // layout(tree);
 
-  const tree = layout.hierarchy({
-    size: [55, 110],
+  let widthMap = new Map([
+    [1, 50],
+    [2, 50],
+    [3, 50],
+    [4, 50],
+    [5, 50],
+    [6, 50],
+    [7, 50],
+    [8, 50],
+    [9, 50],
+    [10, 50],
+    [11, 50],
+    [12, 50],
+    [13, 50],
+    [14, 50],
+    [15, 50],
+    [16, 50],
+    [17, 50]
+  ]);
+
+  let tree = layout.hierarchy({
+    id: 1,
+    size: [widthMap.get(1), 55],
     type: "circle",
     children: [
       {
-        size: [200, 100],
+        id: 2,
+        size: [widthMap.get(2), 100],
         type: "rectangle",
-        children: [{ size: [55, 55], type: "circle" }]
+        children: [
+          { id: 3, size: [widthMap.get(3), 55], type: "circle" },
+          { id: 4, size: [widthMap.get(4), 55], type: "circle" }
+        ]
       },
       {
-        size: [55, 55],
+        id: 5,
+        size: [widthMap.get(5), 55],
         type: "circle",
         children: [
           {
-            size: [200, 100],
+            id: 6,
+            size: [widthMap.get(6), 100],
             type: "rectangle",
             children: [
-              { size: [55, 55], type: "circle" },
-              { size: [55, 55], type: "circle" },
-              { size: [200, 100], type: "rectangle" }
+              { id: 7, size: [widthMap.get(7), 55], type: "circle" },
+              { id: 8, size: [widthMap.get(8), 55], type: "circle" },
+              { id: 9, size: [widthMap.get(9), 100], type: "rectangle" }
             ]
           },
           {
-            size: [200, 100],
+            id: 10,
+            size: [widthMap.get(10), 100],
             type: "rectangle",
             children: [
-              { size: [200, 100], type: "rectangle" },
-              { size: [55, 55], type: "circle" },
-              { size: [200, 100], type: "rectangle" }
+              { id: 11, size: [widthMap.get(11), 100], type: "rectangle" },
+              { id: 12, size: [widthMap.get(12), 55], type: "circle" },
+              { id: 13, size: [widthMap.get(13), 100], type: "rectangle" }
             ]
           },
           {
-            size: [200, 100],
+            id: 14,
+            size: [widthMap.get(14), 100],
             type: "rectangle",
             children: [
-              { size: [200, 100], type: "rectangle" },
-              { size: [200, 100], type: "rectangle" },
-              { size: [55, 55], type: "circle" }
+              { id: 15, size: [widthMap.get(15), 100], type: "rectangle" },
+              { id: 16, size: [widthMap.get(16), 100], type: "rectangle" },
+              { id: 17, size: [widthMap.get(17), 55], type: "circle" }
             ]
           }
         ]
@@ -68,15 +97,13 @@ export function App() {
   layout(tree);
 
   let elements = [];
-  let node_id = 0;
-  let edge_id = 0;
   tree.each((node) => {
     node.y += node.depth * verticalSpacing;
 
     if (node.data.type === "circle") {
       elements.push(
         <AnimatedDonut
-          key={"node_" + node_id}
+          key={node.data.id}
           x={node.x}
           y={node.y}
           radius={40}
@@ -85,11 +112,11 @@ export function App() {
     } else if (node.data.type === "rectangle") {
       elements.push(
         <AnimatedRectangle
-          key={"node_" + node_id}
+          key={node.data.id}
           x={node.x}
           y={node.y}
-          closeWidth={100}
-          openWidth={200}
+          closeWidth={node.data.size[0]}
+          openWidth={node.data.size[0] + 200}
           height={100}
         ></AnimatedRectangle>
       );
@@ -98,7 +125,7 @@ export function App() {
     if (node.parent) {
       elements.push(
         <Connection
-          key={"edge" + edge_id}
+          key={node.parent.data.id + "_" + node.data.id}
           source_x={node.parent.x}
           source_y={node.parent.y}
           target_x={node.x}
@@ -106,8 +133,6 @@ export function App() {
         ></Connection>
       );
     }
-    node_id++;
-    edge_id++;
   });
 
   return (

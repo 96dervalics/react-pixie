@@ -27,22 +27,23 @@ const Donut = ({ x, y, radius, degree, onClick }) => {
 
 export const AnimatedDonut = ({ x, y, radius, degree }) => {
   const random = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
-  let rand = random(0, 360);
-  const [status, setStatus] = useState(false);
+
+  const [rand, setRand] = useState(random(0, 360));
+
   const { viewportBox } = useContext(ViewportContext);
 
-  let timeout = random(5000, 10000);
-  setTimeout(function () {
-    if (IsInViewport(viewportBox, x, y, radius)) {
-      setStatus(!status);
-    }
-  }, timeout);
+  // let timeout = random(5000, 10000);
+  // setTimeout(function () {
+  //   if (IsInViewport(viewportBox, x, y, radius)) {
+  //     setStatus(!status);
+  //   }
+  // }, timeout);
 
-  const click = () => setStatus(!status);
+  const click = () => setRand(random(0, 360));
   const AnimatedDonut = animated(Donut);
   const props = useSpring({
-    degree: status ? rand : rand,
-    from: { degree: 0 }
+    degree: rand
+    //from: { degree: 0 }
   });
   return IsInViewport(viewportBox, x, y, radius) ? (
     <AnimatedDonut

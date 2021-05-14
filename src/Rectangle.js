@@ -42,7 +42,7 @@ export const AnimatedRectangle = ({
   height,
   viewport
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const { viewportBox } = useContext(ViewportContext);
   const click = () => setOpen(!open);
   const AnimatedRectangle = animated(Rectangle);

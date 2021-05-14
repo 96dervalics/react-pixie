@@ -21,27 +21,20 @@ export const Connection = ({ source_x, source_y, target_x, target_y }) => {
 };
 
 const IsInViewport = (viewportBox, source_x, source_y, target_x, target_y) => {
-  const border_margin = 5;
-
-  // left to right line
-  // top => bot: source_y < target_y always
-
   if (
-    viewportBox.corner.x < source_x + border_margin &&
-    viewportBox.corner.x + viewportBox.worldScreenWidth >
-      source_x - border_margin &&
-    viewportBox.corner.y < source_y + border_margin &&
-    viewportBox.corner.y + viewportBox.worldScreenHeight >
-      source_y - border_margin
+    source_x >= target_x &&
+    viewportBox.corner.x < source_x &&
+    viewportBox.corner.x + viewportBox.worldScreenWidth > target_x &&
+    viewportBox.corner.y < target_y &&
+    viewportBox.corner.y + viewportBox.worldScreenHeight > source_y
   ) {
     return true;
   } else if (
-    viewportBox.corner.x < target_x + border_margin &&
-    viewportBox.corner.x + viewportBox.worldScreenWidth >
-      target_x - border_margin &&
-    viewportBox.corner.y < target_y + border_margin &&
-    viewportBox.corner.y + viewportBox.worldScreenHeight >
-      target_y - border_margin
+    source_x < target_x &&
+    viewportBox.corner.x < target_x &&
+    viewportBox.corner.x + viewportBox.worldScreenWidth > source_x &&
+    viewportBox.corner.y < target_y &&
+    viewportBox.corner.y + viewportBox.worldScreenHeight > source_y
   ) {
     return true;
   } else {
