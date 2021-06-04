@@ -37,19 +37,28 @@ const Rectangle = ({ x, y, width, height, onClick }) => {
 export const AnimatedRectangle = ({
   x,
   y,
-  closeWidth,
-  openWidth,
+  c_width,
   height,
-  viewport
+  viewport,
+  onClick,
+  id
 }) => {
+  const onOpenChange = () => {
+    console.log("Child component " + id + ", open: " + open);
+    onClick({ id: id, open: open });
+  };
+
   const [open, setOpen] = useState(true);
   const { viewportBox } = useContext(ViewportContext);
-  const click = () => setOpen(!open);
+  const click = () => {
+    setOpen(!open);
+    onOpenChange();
+  };
   const AnimatedRectangle = animated(Rectangle);
-  const props = useSpring({ width: open ? closeWidth : openWidth });
+  const props = useSpring({ width: open ? c_width : c_width });
 
   return open ? (
-    IsInViewport(viewportBox, x, y, openWidth, height) ? (
+    IsInViewport(viewportBox, x, y, c_width, height) ? (
       <AnimatedRectangle
         x={x}
         y={y}
@@ -58,7 +67,7 @@ export const AnimatedRectangle = ({
         onClick={click}
       ></AnimatedRectangle>
     ) : null
-  ) : IsInViewport(viewportBox, x, y, closeWidth, height) ? (
+  ) : IsInViewport(viewportBox, x, y, c_width, height) ? (
     <AnimatedRectangle
       x={x}
       y={y}
