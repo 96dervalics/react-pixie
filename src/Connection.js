@@ -1,5 +1,5 @@
 import { Graphics } from "@inlet/react-pixi";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useSpring, animated } from "react-spring";
 import * as PIXI from "pixi.js";
 import { ViewportContext } from "./ViewportContext";

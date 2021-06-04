@@ -41,6 +41,7 @@ export const AnimatedDonut = ({ x, y, radius, degree }) => {
 
   const click = () => setRand(random(0, 360));
   const AnimatedDonut = animated(Donut);
+
   const props = useSpring({
     degree: rand,
     //from: { degree: 0 },

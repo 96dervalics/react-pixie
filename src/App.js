@@ -8,7 +8,6 @@ import MyViewport from "./MyViewport";
 import { ViewportProvider } from "./ViewportContext";
 import { flextree } from "d3-flextree";
 import { tree_data } from "./tree_test";
-import { useSpring, animated } from "react-spring";
 
 const width = 1000;
 const height = 600;
