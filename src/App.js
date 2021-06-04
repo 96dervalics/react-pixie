@@ -11,7 +11,7 @@ import { tree_data } from "./tree_test";
 
 const width = 1000;
 const height = 600;
-const horisontalSpacing = 100 + 100;
+const horisontalSpacing = 200 + 100;
 const verticalSpacing = 100 + 50;
 
 let widthMap = new Map([
@@ -110,11 +110,12 @@ export function App() {
 
   function onOpenChange(val) {
     console.log("Parent component: " + val.id + ", open:" + val.open);
-    widthMap.set(val.id, val.open ? 200 : 50);
+    widthMap.set(val.id, val.open ? 300 : 50);
     // console.log(widthMap.get(val.id));
     // console.log(data_tree.children[0].id);
     // console.log(data_tree.children[0].size);
-    searchInTree(data_tree, val.id).size[0] = widthMap.get(val.id);
+    let node = searchInTree(data_tree, val.id);
+    node.size[0] = widthMap.get(val.id);
     // console.log(data_tree.children[0].id);
     // console.log(data_tree.children[0].size);
     // console.log(tree);
