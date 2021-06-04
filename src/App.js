@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import * as PIXI from "pixi.js";
 import { AnimatedRectangle } from "./Rectangle";
 import { AnimatedDonut } from "./Donut";
-import { Connection } from "./Connection";
+import { AnimatedConnection } from "./Connection";
 import MyViewport from "./MyViewport";
 import { ViewportProvider } from "./ViewportContext";
 import { flextree } from "d3-flextree";
 import { tree_data } from "./tree_test";
+import { useSpring, animated } from "react-spring";
 
 const width = 1000;
 const height = 600;
@@ -108,7 +109,7 @@ export function App() {
   layout.spacing(horisontalSpacing);
   let elements = [];
 
-  function onOpenChange(val) {
+  function onTreeChange(val) {
     console.log("Parent component: " + val.id + ", open:" + val.open);
     widthMap.set(val.id, val.open ? 300 : 50);
     // console.log(widthMap.get(val.id));
@@ -144,7 +145,7 @@ export function App() {
         elements.push(
           <AnimatedRectangle
             id={node.data.id}
-            onClick={onOpenChange.bind(this)}
+            onClick={onTreeChange.bind(this)}
             key={node.data.id}
             x={node.x}
             y={node.y}
@@ -157,13 +158,13 @@ export function App() {
 
       if (node.parent) {
         elements.push(
-          <Connection
+          <AnimatedConnection
             key={node.parent.data.id + "_" + node.data.id}
             source_x={node.parent.x}
             source_y={node.parent.y}
             target_x={node.x}
             target_y={node.y}
-          ></Connection>
+          ></AnimatedConnection>
         );
       }
     });

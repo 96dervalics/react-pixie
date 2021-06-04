@@ -4,9 +4,7 @@ import { useSpring, animated } from "react-spring";
 import * as PIXI from "pixi.js";
 import { ViewportContext } from "./ViewportContext";
 
-export const Connection = ({ source_x, source_y, target_x, target_y }) => {
-  const { viewportBox } = useContext(ViewportContext);
-
+const Connection = ({ source_x, source_y, target_x, target_y }) => {
   const draw = (graphic) => {
     graphic.clear();
 
@@ -15,8 +13,26 @@ export const Connection = ({ source_x, source_y, target_x, target_y }) => {
     graphic.lineTo(target_x, target_y);
   };
 
+  return <Graphics draw={draw} />;
+};
+
+export const AnimatedConnection = ({
+  source_x,
+  source_y,
+  target_x,
+  target_y
+}) => {
+  const { viewportBox } = useContext(ViewportContext);
+  const AnimatedConnection = animated(Connection);
+  const props = useSpring({ source_x: source_x, target_x: target_x });
+
   return IsInViewport(viewportBox, source_x, source_y, target_x, target_y) ? (
-    <Graphics draw={draw} />
+    <AnimatedConnection
+      source_x={props.source_x}
+      source_y={source_y}
+      target_x={props.target_x}
+      target_y={target_y}
+    ></AnimatedConnection>
   ) : null;
 };
 

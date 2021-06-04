@@ -43,7 +43,7 @@ export const AnimatedRectangle = ({
   onClick,
   id
 }) => {
-  const onOpenChange = () => {
+  const onTreeChange = () => {
     console.log("Child component " + id + ", open: " + open);
     onClick({ id: id, open: open });
   };
@@ -52,15 +52,15 @@ export const AnimatedRectangle = ({
   const { viewportBox } = useContext(ViewportContext);
   const click = () => {
     setOpen(!open);
-    onOpenChange();
+    onTreeChange();
   };
   const AnimatedRectangle = animated(Rectangle);
-  const props = useSpring({ width: open ? c_width : c_width });
+  const props = useSpring({ width: open ? c_width : c_width, x: open ? x : x });
 
   return open ? (
     IsInViewport(viewportBox, x, y, c_width, height) ? (
       <AnimatedRectangle
-        x={x}
+        x={props.x}
         y={y}
         width={props.width}
         height={height}
@@ -69,7 +69,7 @@ export const AnimatedRectangle = ({
     ) : null
   ) : IsInViewport(viewportBox, x, y, c_width, height) ? (
     <AnimatedRectangle
-      x={x}
+      x={props.x}
       y={y}
       width={props.width}
       height={height}

@@ -42,12 +42,17 @@ export const AnimatedDonut = ({ x, y, radius, degree }) => {
   const click = () => setRand(random(0, 360));
   const AnimatedDonut = animated(Donut);
   const props = useSpring({
-    degree: rand
-    //from: { degree: 0 }
+    degree: rand,
+    //from: { degree: 0 },
+    x: x
   });
+
+  //const AnimatedRectangle = animated(Rectangle);
+  // const props = useSpring({ width: open ? c_width : c_width, x: open ? x : x });
+
   return IsInViewport(viewportBox, x, y, radius) ? (
     <AnimatedDonut
-      x={x}
+      x={props.x}
       y={y}
       radius={radius}
       degree={props.degree}
